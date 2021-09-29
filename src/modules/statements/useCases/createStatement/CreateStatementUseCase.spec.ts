@@ -71,6 +71,25 @@ describe("Creates a statement", () => {
     expect(withdraw.description).toEqual('A 20 dollars withdraw');
   });
 
+  it("should not be able to create a withdraw statement with an insufficient funds", async () => {
+    const user = await createUserUseCase.execute({
+      name: "Filipe",
+      email: "filipe@email.com",
+      password: "password"
+    });
+
+    expect(async () => {
+      await createStatementUseCase.execute(
+        {
+          user_id: user.id,
+          type: 'withdraw',
+          amount: 20,
+          description: 'A 20 dollars withdraw'
+        } as ICreateStatementDTO
+      );
+    }).rejects.toBeInstanceOf(CreateStatementError.InsufficientFunds);
+  });
+
   it("should not be able to create a statement to a non-existing user", async () => {
     expect(async () => {
       await createStatementUseCase.execute(
@@ -82,25 +101,5 @@ describe("Creates a statement", () => {
         } as ICreateStatementDTO
       );
     }).rejects.toBeInstanceOf(CreateStatementError.UserNotFound);
-  });
-
-  // For some reason this must be the last test
-  it("should not be able to create a withdraw statement with a negative balance", async () => {
-    expect(async () => {
-      const user = await createUserUseCase.execute({
-        name: "Filipe",
-        email: "filipe@email.com",
-        password: "password"
-      });
-
-      await createStatementUseCase.execute(
-        {
-          user_id: user.id,
-          type: 'withdraw',
-          amount: 20,
-          description: 'A 20 dollars withdraw'
-        } as ICreateStatementDTO
-      );
-    }).rejects.toBeInstanceOf(CreateStatementError.InsufficientFunds);
   });
 });
