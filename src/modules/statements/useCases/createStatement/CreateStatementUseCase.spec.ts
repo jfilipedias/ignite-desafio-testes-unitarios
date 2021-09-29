@@ -25,19 +25,18 @@ describe("Creates a statement", () => {
       password: "password"
     });
 
-    const deposit = await createStatementUseCase.execute(
-      {
-        user_id: user.id,
-        type: 'deposit',
-        amount: 20,
-        description: 'A 20 dollars deposit'
-      } as ICreateStatementDTO
-    );
+    const deposit = await createStatementUseCase.execute({
+      user_id: user.id,
+      type: "deposit",
+      amount: 20,
+      description: "A 20 dollars deposit"
+    } as ICreateStatementDTO );
 
-    expect(deposit).toHaveProperty('id');
+    expect(deposit).toHaveProperty("id");
     expect(deposit.user_id).toEqual(user.id);
     expect(deposit.amount).toEqual(20);
-    expect(deposit.description).toEqual('A 20 dollars deposit');
+    expect(deposit.type).toEqual("deposit");
+    expect(deposit.description).toEqual("A 20 dollars deposit");
   });
 
   it("should be able to create a withdraw statement", async () => {
@@ -47,28 +46,24 @@ describe("Creates a statement", () => {
       password: "password"
     });
 
-    await createStatementUseCase.execute(
-      {
-        user_id: user.id,
-        type: 'deposit',
-        amount: 20,
-        description: 'A 20 dollars deposit'
-      } as ICreateStatementDTO
-    );
+    await createStatementUseCase.execute({
+      user_id: user.id,
+      type: "deposit",
+      amount: 20,
+      description: "A 20 dollars deposit"
+    } as ICreateStatementDTO );
 
-    const withdraw = await createStatementUseCase.execute(
-      {
-        user_id: user.id,
-        type: 'withdraw',
-        amount: 20,
-        description: 'A 20 dollars withdraw'
-      } as ICreateStatementDTO
-    );
+    const withdraw = await createStatementUseCase.execute({
+      user_id: user.id,
+      type: "withdraw",
+      amount: 20,
+      description: "A 20 dollars withdraw"
+    } as ICreateStatementDTO );
 
-    expect(withdraw).toHaveProperty('id');
+    expect(withdraw).toHaveProperty("id");
     expect(withdraw.user_id).toEqual(user.id);
     expect(withdraw.amount).toEqual(20);
-    expect(withdraw.description).toEqual('A 20 dollars withdraw');
+    expect(withdraw.description).toEqual("A 20 dollars withdraw");
   });
 
   it("should not be able to create a withdraw statement with an insufficient funds", async () => {
@@ -79,27 +74,23 @@ describe("Creates a statement", () => {
     });
 
     expect(async () => {
-      await createStatementUseCase.execute(
-        {
-          user_id: user.id,
-          type: 'withdraw',
-          amount: 20,
-          description: 'A 20 dollars withdraw'
-        } as ICreateStatementDTO
-      );
+      await createStatementUseCase.execute({
+        user_id: user.id,
+        type: "withdraw",
+        amount: 20,
+        description: "A 20 dollars withdraw"
+      } as ICreateStatementDTO );
     }).rejects.toBeInstanceOf(CreateStatementError.InsufficientFunds);
   });
 
   it("should not be able to create a statement to a non-existing user", async () => {
     expect(async () => {
-      await createStatementUseCase.execute(
-        {
-          user_id: '1234567890',
-          type: 'withdraw',
-          amount: 20,
-          description: 'A 20 dollars withdraw'
-        } as ICreateStatementDTO
-      );
+      await createStatementUseCase.execute({
+        user_id: "1234567890",
+        type: "withdraw",
+        amount: 20,
+        description: "A 20 dollars withdraw"
+      } as ICreateStatementDTO );
     }).rejects.toBeInstanceOf(CreateStatementError.UserNotFound);
   });
 });

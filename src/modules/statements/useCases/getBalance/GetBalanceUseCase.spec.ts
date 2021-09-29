@@ -28,28 +28,24 @@ describe("Gets the balance", () => {
       password: "password"
     });
 
-    const deposit = await createStatementUseCase.execute(
-      {
-        user_id: user.id,
-        type: 'deposit',
-        amount: 20,
-        description: 'A 20 dollars deposit'
-      } as ICreateStatementDTO
-    );
+    const deposit = await createStatementUseCase.execute({
+      user_id: user.id,
+      type: "deposit",
+      amount: 20,
+      description: "A 20 dollars deposit"
+    } as ICreateStatementDTO );
 
-    const withdraw = await createStatementUseCase.execute(
-      {
-        user_id: user.id,
-        type: 'withdraw',
-        amount: 20,
-        description: 'A 20 dollars withdraw'
-      } as ICreateStatementDTO
-    );
+    const withdraw = await createStatementUseCase.execute({
+      user_id: user.id,
+      type: "withdraw",
+      amount: 20,
+      description: "A 20 dollars withdraw"
+    } as ICreateStatementDTO );
 
     const balance = await getBalanceUseCase.execute({user_id: user.id as string});
 
-    expect(balance).toHaveProperty('statement');
-    expect(balance).toHaveProperty('balance');
+    expect(balance).toHaveProperty("statement");
+    expect(balance).toHaveProperty("balance");
     expect(balance.statement[0]).toEqual(deposit)
     expect(balance.statement[1]).toEqual(withdraw)
     expect(balance.balance).toEqual(0)
@@ -57,7 +53,7 @@ describe("Gets the balance", () => {
 
   it("should not be able to list the statements and funds in the balance from a non-existing user", async () => {
     expect(async () => {
-      await getBalanceUseCase.execute({user_id: "123"});
+      await getBalanceUseCase.execute({ user_id: "123" });
     }).rejects.toBeInstanceOf(GetBalanceError);
   });
 });
