@@ -84,6 +84,7 @@ describe("Creates a statement", () => {
     }).rejects.toBeInstanceOf(CreateStatementError.UserNotFound);
   });
 
+  // For some reason this must be the last test
   it("should not be able to create a withdraw statement with a negative balance", async () => {
     expect(async () => {
       const user = await createUserUseCase.execute({
