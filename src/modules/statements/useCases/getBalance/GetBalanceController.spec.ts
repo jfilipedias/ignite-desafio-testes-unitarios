@@ -57,6 +57,8 @@ describe("Get balance controller", () => {
       .send();
 
     expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("statement");
+    expect(response.body).toHaveProperty("balance");
     expect(response.body.statement.length).toBe(2);
     expect(response.body.statement[0].amount).toEqual(200);
     expect(response.body.statement[0].description).toEqual("Deposit U$200.00");
