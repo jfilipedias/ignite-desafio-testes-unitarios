@@ -15,6 +15,7 @@ export class StatementsRepository implements IStatementsRepository {
 
   async create({
     user_id,
+    receiver_id,
     amount,
     description,
     type
