@@ -12,4 +12,10 @@ export namespace CreateStatementError {
       super('Insufficient funds', 400);
     }
   }
+
+  export class ReceiverNotFound extends AppError {
+    constructor() {
+      super('Receiver not found', 404);
+    }
+  }
 }

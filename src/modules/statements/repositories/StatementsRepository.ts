@@ -27,6 +27,13 @@ export class StatementsRepository implements IStatementsRepository {
       type
     });
 
+    if (type == 'transfer') {
+      Object.assign(statement, {
+        sender_id: user_id,
+        receiver_id
+      });
+    }
+
     return this.repository.save(statement);
   }
 
